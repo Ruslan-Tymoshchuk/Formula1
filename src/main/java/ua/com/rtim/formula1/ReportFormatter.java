@@ -15,33 +15,33 @@ import java.util.stream.Stream;
 public class ReportFormatter {
 
 	public static final String HYPHEN_DELIMITER = "-";
-	public static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("mm:ss.SSS");
+	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("mm:ss.SSS");
 
-	public String format(List<Racer> racers, int limit) {
-		StringBuilder format = new StringBuilder();
+	public String format(List<Racer> racers, int bestRacersNumber) {
+		StringBuilder result = new StringBuilder();
 		int maxNameLength = getMaxFieldLength(racers, Racer::getFullName);
 		int maxTeamLength = getMaxFieldLength(racers, Racer::getTeam);
-		AtomicInteger count = new AtomicInteger();
+		AtomicInteger number = new AtomicInteger();
 		String pattern = "%02d. %-" + maxNameLength + "s | %-" + maxTeamLength + "s | %s";
 		racers.stream().sorted(comparing(Racer::getLapTime)).forEach(s -> {
-			if ((count.get() == limit)) {
-				format.append(repeatChar(HYPHEN_DELIMITER, maxNameLength + maxTeamLength + 19)).append(lineSeparator());
+			if ((number.get() == bestRacersNumber)) {
+				result.append(repeatChar(maxNameLength + maxTeamLength + 19)).append(lineSeparator());
 			}
-			format.append(String.format(pattern, count.incrementAndGet(), s.getFullName(), s.getTeam(),
+			result.append(String.format(pattern, number.incrementAndGet(), s.getFullName(), s.getTeam(),
 					formatToTime(s.getLapTime()))).append(lineSeparator());
 		});
-		return format.toString();
+		return result.toString();
 	}
 
-	private String repeatChar(String symbol, int times) {
-		return Stream.generate(() -> symbol).limit(times).collect(Collectors.joining());
+	private String repeatChar(int times) {
+		return Stream.generate(() -> HYPHEN_DELIMITER).limit(times).collect(Collectors.joining());
 	}
 
 	private int getMaxFieldLength(List<Racer> racers, Function<Racer, String> function) {
-		return racers.stream().mapToInt(s -> function.apply(s).length()).max().getAsInt();
+		return racers.stream().map(function).mapToInt(String::length).max().orElse(0);
 	}
 
 	private String formatToTime(Duration duration) {
-		return LocalTime.ofNanoOfDay(duration.toNanos()).format(TIME);
+		return LocalTime.ofNanoOfDay(duration.toNanos()).format(TIME_FORMATTER);
 	}
 }

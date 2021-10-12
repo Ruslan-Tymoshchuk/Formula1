@@ -1,6 +1,7 @@
 package ua.com.rtim.formula1;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class Racer {
 
@@ -24,5 +25,23 @@ public class Racer {
 
 	public String getTeam() {
 		return team;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fullName, lapTime, team);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Racer other = (Racer) obj;
+		return Objects.equals(fullName, other.fullName) && Objects.equals(lapTime, other.lapTime)
+				&& Objects.equals(team, other.team);
 	}
 }

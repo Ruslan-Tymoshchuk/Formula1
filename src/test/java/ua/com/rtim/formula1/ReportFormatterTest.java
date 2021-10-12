@@ -4,6 +4,8 @@ import static java.lang.System.lineSeparator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Test;
 
 class ReportFormatterTest {
@@ -11,8 +13,9 @@ class ReportFormatterTest {
 	private ReportFormatter formatter = new ReportFormatter();
 
 	@Test
-	void givenRacers_whenFormat_thenPrintReport() {
-		RacerRepository racerRepository = new RacerRepository();
+	void givenListRacers_whenFormat_thenPrintReport() throws IOException {
+		RacerRepository racerRepository = new RacerRepository("config.properties", "startTimeFile", "finishTimeFile",
+				"abbreviationsFile");
 		StringBuilder expected = new StringBuilder();
 		expected.append("01. Sebastian Vettel  | FERRARI                   | 01:04.415" + lineSeparator());
 		expected.append("02. Daniel Ricciardo  | RED BULL RACING TAG HEUER | 01:12.013" + lineSeparator());
@@ -34,7 +37,7 @@ class ReportFormatterTest {
 		expected.append("17. Marcus Ericsson   | SAUBER FERRARI            | 01:13.265" + lineSeparator());
 		expected.append("18. Lance Stroll      | WILLIAMS MERCEDES         | 01:13.323" + lineSeparator());
 		expected.append("19. Kevin Magnussen   | HAAS FERRARI              | 01:13.393" + lineSeparator());
-		assertEquals(expected.toString(), formatter.format(racerRepository.splitToRacersList(), 15));
+		assertEquals(expected.toString(), formatter.format(racerRepository.getRacers(), 15));
 	}
 
 	@Test
