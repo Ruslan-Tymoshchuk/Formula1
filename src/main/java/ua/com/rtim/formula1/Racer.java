@@ -5,9 +5,9 @@ import java.util.Objects;
 
 public class Racer {
 
-	private Duration lapTime;
-	private String fullName;
-	private String team;
+	private final Duration lapTime;
+	private final String fullName;
+	private final String team;
 
 	public Racer(Duration lapTime, String fullName, String team) {
 		this.lapTime = lapTime;

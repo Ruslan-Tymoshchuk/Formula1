@@ -18,10 +18,10 @@ import java.util.stream.Stream;
 public class RacerRepository {
 
 	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS");
-	private String property;
-	private String startTime;
-	private String finishTime;
-	private String abbreviations;
+	private final String property;
+	private final String startTime;
+	private final String finishTime;
+	private final String abbreviations;
 
 	public RacerRepository(String property, String startTime, String finishTime, String abbreviations) {
 		this.property = property;
