@@ -40,7 +40,7 @@ public class RacerRepository {
 		try {
 			URL fileUrl = getClass().getClassLoader().getResource(inputName);
 			if (fileUrl != null) {
-				file = new File(fileUrl.getPath());
+				file = new File(fileUrl.getFile());
 			} else {
 				throw new FileNotFoundException();
 			}
